@@ -24,82 +24,55 @@ export async function GET() {
         startedAt: schema.testRuns.startedAt,
         finishedAt: schema.testRuns.finishedAt,
         createdAt: schema.testRuns.createdAt,
+        repoOwner: schema.repositories.githubOwner,
+        repoName: schema.repositories.githubRepo,
+        sessionLogsUrl: schema.browserSessions.logsUrl,
+        sessionScreenshotUrl: schema.browserSessions.screenshotUrl,
       })
       .from(schema.testRuns)
+      .leftJoin(
+        schema.repositories,
+        eq(schema.testRuns.repositoryId, schema.repositories.id),
+      )
+      .leftJoin(
+        schema.browserSessions,
+        eq(schema.testRuns.id, schema.browserSessions.testRunId),
+      )
       .orderBy(desc(schema.testRuns.createdAt))
       .limit(50);
 
-    // Enrich with repository names and browser session data
-    const enrichedRuns = await Promise.all(
-      runs.map(async (run) => {
-        let repoName = "Unknown";
-        let repoFullName = "";
-        try {
-          const [repo] = await db
-            .select({
-              owner: schema.repositories.githubOwner,
-              name: schema.repositories.githubRepo,
-            })
-            .from(schema.repositories)
-            .where(eq(schema.repositories.id, run.repositoryId))
-            .limit(1);
-          if (repo) {
-            repoName = repo.name;
-            repoFullName = `${repo.owner}/${repo.name}`;
-          }
-        } catch {
-          // ignore
-        }
+    const enrichedRuns = runs.map((run) => {
+      const repoFullName = run.repoName
+        ? `${run.repoOwner}/${run.repoName}`
+        : "";
+      const durationMs =
+        run.startedAt && run.finishedAt
+          ? new Date(run.finishedAt).getTime() - new Date(run.startedAt).getTime()
+          : null;
 
-        let sessionUrl: string | null = null;
-        let screenshotUrl: string | null = null;
-        try {
-          const [session] = await db
-            .select({
-              logsUrl: schema.browserSessions.logsUrl,
-              screenshotUrl: schema.browserSessions.screenshotUrl,
-            })
-            .from(schema.browserSessions)
-            .where(eq(schema.browserSessions.testRunId, run.id))
-            .limit(1);
-          if (session) {
-            sessionUrl = session.logsUrl;
-            screenshotUrl = session.screenshotUrl;
-          }
-        } catch {
-          // ignore
-        }
-
-        const durationMs =
-          run.startedAt && run.finishedAt
-            ? new Date(run.finishedAt).getTime() - new Date(run.startedAt).getTime()
-            : null;
-
-        return {
-          id: run.id,
-          repoName,
-          repoFullName,
-          status: run.status,
-          summary: run.summary,
-          durationMs,
-          startedAt: run.startedAt?.toISOString() ?? null,
-          finishedAt: run.finishedAt?.toISOString() ?? null,
-          createdAt: run.createdAt.toISOString(),
-          sessionUrl,
-          screenshotUrl,
-        };
-      })
-    );
+      return {
+        id: run.id,
+        repoName: run.repoName || "Unknown",
+        repoFullName,
+        status: run.status,
+        summary: run.summary,
+        durationMs,
+        startedAt: run.startedAt?.toISOString() ?? null,
+        finishedAt: run.finishedAt?.toISOString() ?? null,
+        createdAt: run.createdAt.toISOString(),
+        sessionUrl: run.sessionLogsUrl ?? null,
+        screenshotUrl: run.sessionScreenshotUrl ?? null,
+      };
+    });
 
     return NextResponse.json({ ok: true, runs: enrichedRuns });
   } catch (error) {
     return NextResponse.json(
       {
-        ok: false,
+        ok: true,
         error: error instanceof Error ? error.message : "Failed to fetch runs.",
         runs: [],
       },
-      { status: 500 }
     );
   }
 }

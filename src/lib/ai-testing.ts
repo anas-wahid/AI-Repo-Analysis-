@@ -108,13 +108,11 @@ export async function generateTestCases(analysis: RepositoryAnalysis): Promise<T
       },
     });
 
-    console.log("Successfully received test cases from AI");
     return {
       testCases: normalizeCases(parsed.testCases as Record<string, unknown>[]),
       aiConversation: [conversation],
     };
   } catch (error) {
-    console.error("AI Generation Error:", error);
     return {
       testCases: fallbackTestCases(analysis),
       aiConversation: [{
@@ -243,9 +241,7 @@ ${JSON.stringify(input.schema, null, 2)}`;
   const userContent = JSON.stringify(input.input);
   const callTimestamp = new Date().toISOString();
 
-  console.log(`Calling AI (${model}) on ${endpoint}...`);
   const start = Date.now();
-
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 25_000); // 25s timeout
 
@@ -270,14 +266,18 @@ ${JSON.stringify(input.schema, null, 2)}`;
 
   if (!response.ok) {
     const errText = await response.text();
-    console.error("AI API Error Response:", errText);
-    throw new Error(`AI API returned ${response.status}: ${errText.slice(0, 300)}`);
+    throw new Error(
+      response.status === 429
+        ? "AI API rate limit exceeded. Please try again later."
+        : response.status === 401
+        ? "AI API authentication failed. Check your API key."
+        : `AI API error (${response.status}).`,
+    );
   }
 
   const json = await response.json();
   const text = json.choices?.[0]?.message?.content;
   const durationMs = Date.now() - start;
-  console.log(`AI Response received in ${durationMs}ms`);
 
   if (!text) throw new Error("No AI output text.");
 

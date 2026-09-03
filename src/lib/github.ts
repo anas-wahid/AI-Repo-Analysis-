@@ -321,8 +321,12 @@ async function githubFetch<T>(path: string): Promise<T> {
   });
 
   if (!response.ok) {
-    const message = await response.text();
-    throw new Error(`GitHub API returned ${response.status}: ${message.slice(0, 240)}`);
+    const message = response.status === 404
+      ? "Repository not found."
+      : response.status === 403
+      ? "GitHub API rate limit exceeded or access denied."
+      : `GitHub API error (${response.status}).`;
+    throw new Error(message);
   }
 
   return response.json() as Promise<T>;

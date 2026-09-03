@@ -7,6 +7,12 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     if (!body.testCase) throw new Error("testCase is required. Generate and select a test case first.");
+    if (typeof body.testCase.title !== "string" || !body.testCase.title.trim()) {
+      throw new Error("testCase.title is required.");
+    }
+    if (body.testCase.title.length > 200) {
+      throw new Error("testCase.title must be 200 characters or fewer.");
+    }
 
     const { generatedScript, aiConversation } = await generatePlaywrightScript({
       analysis: body.analysis,

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
-import { Sidebar } from "@/components/sidebar";
+import { AppShell } from "@/components/app-shell";
 import "./globals.css";
 
 const jakarta = Plus_Jakarta_Sans({
@@ -11,7 +11,7 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "AI Testing Automation Agent",
+  title: "TESTO - AI Testing Automation Agent",
   description:
     "AI generated repository tests with GitHub, Playwright, Browserbase, Neon, and Drizzle.",
 };
@@ -24,10 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={jakarta.variable}>
       <body suppressHydrationWarning>
-        <div className="app-shell">
-          <Sidebar />
-          <main className="main-panel">{children}</main>
-        </div>
+        <AppShell>{children}</AppShell>
       </body>
     </html>
   );

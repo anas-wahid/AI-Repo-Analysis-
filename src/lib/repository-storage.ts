@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { desc } from "drizzle-orm";
 import type { RepositoryAnalysis } from "@/lib/github";
 import { env } from "@/lib/env";
 
@@ -90,7 +90,7 @@ export async function listRecentRepositories() {
         createdAt: schema.repositories.createdAt,
       })
       .from(schema.repositories)
-      .where(eq(schema.repositories.githubOwner, schema.repositories.githubOwner))
+      .orderBy(desc(schema.repositories.createdAt))
       .limit(8);
   } catch {
     return [];

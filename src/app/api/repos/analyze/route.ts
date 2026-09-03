@@ -8,6 +8,13 @@ export async function POST(request: NextRequest) {
     const repoUrl = assertString(body.repoUrl, "repoUrl");
     const branch = typeof body.branch === "string" ? body.branch : "";
 
+    if (repoUrl.length > 500) {
+      throw new Error("Repository URL is too long.");
+    }
+    if (branch.length > 200) {
+      throw new Error("Branch name is too long.");
+    }
+
     const analysis = await analyzeGitHubRepository({ repoUrl, branch });
     const persistence = await persistRepositoryAnalysis(analysis);
 

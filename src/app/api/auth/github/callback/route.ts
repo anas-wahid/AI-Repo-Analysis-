@@ -63,7 +63,7 @@ export async function GET(request: NextRequest) {
     // Store token in secure httpOnly cookie (7 days)
     cookieStore.set("gh_token", tokenData.access_token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: true,
       maxAge: 60 * 60 * 24 * 7, // 7 days
       path: "/",
       sameSite: "lax",

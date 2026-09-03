@@ -19,7 +19,7 @@ type GitHubStatus = {
 const navItems = [
   { 
     label: "PR Review", 
-    href: "/", 
+    href: "/review", 
     icon: (
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="nav-svg">
         <circle cx="11" cy="11" r="8" />
@@ -87,8 +87,8 @@ export function Sidebar() {
     <aside className="sidebar">
       <div className="brand" style={{ display: "flex", gap: 10, alignItems: "center" }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/logo.png" alt="agent.dev logo" style={{ height: 24, width: "auto", borderRadius: 4 }} />
-        <span style={{ fontSize: 15, fontWeight: 700, letterSpacing: "-0.03em", color: "var(--text)" }}>agent.dev</span>
+        <img src="/logo.png" alt="TESTO logo" style={{ height: 24, width: "auto", borderRadius: 4 }} />
+        <span style={{ fontSize: 15, fontWeight: 700, letterSpacing: "-0.03em", color: "var(--text)" }}>TESTO</span>
       </div>
 
       <nav className="nav-block">

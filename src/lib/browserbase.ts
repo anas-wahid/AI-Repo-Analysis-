@@ -89,8 +89,11 @@ async function runBrowserbase(ctx: {
     });
 
     if (!sessionRes.ok) {
-      const text = await sessionRes.text();
-      throw new Error(`Browserbase session creation failed (${sessionRes.status}): ${text.slice(0, 300)}`);
+      throw new Error(
+        sessionRes.status === 401
+          ? "Browserbase authentication failed. Check your API key."
+          : `Browserbase session creation failed (${sessionRes.status}).`,
+      );
     }
 
     const session = (await sessionRes.json()) as { id: string; connectUrl?: string };
@@ -154,8 +157,7 @@ async function runLocal(ctx: {
 
   logs.push("No Browserbase credentials — running locally with headless Chromium.");
 
-  // Video output dir on E: drive (has 67GB free) to avoid C: space issues
-  const videoDir = path.join("E:\\", "ai-testing-automation-agent", ".test-videos");
+  const videoDir = path.join(process.cwd(), ".test-videos");
   fs.mkdirSync(videoDir, { recursive: true });
 
   let browser: Browser | undefined;
@@ -171,9 +173,6 @@ async function runLocal(ctx: {
       args: [
         "--disable-gpu",
         "--disable-dev-shm-usage",
-        "--no-sandbox",
-        "--disable-setuid-sandbox",
-        "--disable-web-security",
         "--font-render-hinting=none",
       ],
     });

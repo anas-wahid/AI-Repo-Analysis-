@@ -14,14 +14,19 @@ export async function POST(request: NextRequest) {
       body.targetBaseUrl || env.targetBaseUrl || "http://localhost:3000";
 
     const steps = Array.isArray(body.generatedScript.steps)
-      ? body.generatedScript.steps
+      ? body.generatedScript.steps.slice(0, 20)
       : [];
+
+    const validActions = new Set(["goto", "click", "fill", "expectVisible", "expectText", "screenshot"]);
+    const sanitizedSteps = steps.filter(
+      (step: { action?: string }) => step && typeof step.action === "string" && validActions.has(step.action),
+    );
 
     const testTitle: string = body.generatedScript.title || "Browser Test";
 
     // ── Run the browser session ────────────────────────────────
     const result = await runBrowserSession({
-      steps,
+      steps: sanitizedSteps,
       targetBaseUrl,
       testTitle,
       browserbaseApiKey: env.browserbaseApiKey || undefined,

@@ -5,12 +5,16 @@ import { env } from "@/lib/env";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    if (!body.prompt || typeof body.prompt !== "string" || body.prompt.trim().length < 5) {
+    const prompt = body.prompt?.trim();
+    if (!prompt || typeof body.prompt !== "string" || prompt.length < 5) {
       throw new Error("Please provide a test description (at least 5 characters).");
+    }
+    if (prompt.length > 2000) {
+      throw new Error("Test description must be 2000 characters or fewer.");
     }
 
     const { testCase, aiConversation } = await generateTestFromPrompt({
-      prompt: body.prompt.trim(),
+      prompt,
       analysis: body.analysis ?? undefined,
     });
 
@@ -32,7 +36,7 @@ export async function POST(request: NextRequest) {
           sourceMetadata: {
             assertions: testCase.assertions,
             fromNaturalLanguage: true,
-            originalPrompt: body.prompt.trim(),
+            originalPrompt: prompt,
           },
         }).returning({ id: schema.testCases.id });
 

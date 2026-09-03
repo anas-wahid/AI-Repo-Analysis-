@@ -49,11 +49,7 @@ export default function HistoryPage() {
   function formatDate(iso: string) {
     try {
       const d = new Date(iso);
-      return d.toLocaleDateString([], {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      });
+      return d.toLocaleDateString([], { month: "short", day: "numeric", year: "numeric" });
     } catch {
       return "—";
     }
@@ -61,10 +57,7 @@ export default function HistoryPage() {
 
   function formatTime(iso: string) {
     try {
-      return new Date(iso).toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      });
+      return new Date(iso).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
     } catch {
       return "";
     }
@@ -76,38 +69,33 @@ export default function HistoryPage() {
     return `${(ms / 1000).toFixed(1)}s`;
   }
 
+  const passed = runs.filter((r) => r.status === "passed").length;
+  const failed = runs.filter((r) => r.status === "failed").length;
+  const passRate = runs.length > 0 ? ((passed / runs.length) * 100).toFixed(0) : "—";
+
   return (
     <section className="review-page">
       <header className="page-header">
         <div>
-          <h1>Test Run History</h1>
-          <p>View past test runs and their results across all repositories.</p>
+          <h1 style={{ fontSize: 28, fontWeight: 800, letterSpacing: "-0.03em" }}>Test Run History</h1>
+          <p style={{ color: "var(--muted)", fontSize: 15, marginTop: 6 }}>
+            View past test runs and their results across all repositories.
+          </p>
         </div>
         <button
-          className="ghost-button"
+          className="btn btn-outline btn-md"
           type="button"
           onClick={() => {
             setLoading(true);
             fetch("/api/runs")
               .then((r) => r.json())
-              .then((data) => {
-                if (data.ok) setRuns(data.runs);
-              })
+              .then((data) => { if (data.ok) setRuns(data.runs); })
               .catch(() => {})
               .finally(() => setLoading(false));
           }}
           style={{ display: "inline-flex", alignItems: "center", gap: 6 }}
         >
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
           </svg>
           Refresh
@@ -115,19 +103,25 @@ export default function HistoryPage() {
       </header>
 
       {loading ? (
-        <div className="notice-banner">
-          <span className="spinner" /> Loading test history...
+        <div className="skeleton-grid">
+          <div className="skeleton-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16 }}>
+            <div className="skeleton-card header-skeleton" />
+            <div className="skeleton-card header-skeleton" />
+            <div className="skeleton-card header-skeleton" />
+            <div className="skeleton-card header-skeleton" />
+          </div>
+          <div className="skeleton-card" style={{ height: 200 }} />
         </div>
       ) : runs.length === 0 ? (
         <div className="empty-state-card">
-          <div className="empty-icon">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#d4d4d8" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <div className="empty-icon" style={{ marginBottom: 16 }}>
+            <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#d4d4d8" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="12" cy="12" r="10" />
               <polyline points="12 6 12 12 16 14" />
             </svg>
           </div>
-          <h2>No test runs yet</h2>
-          <p>
+          <h2 style={{ fontSize: 20, fontWeight: 700 }}>No test runs yet</h2>
+          <p style={{ color: "var(--muted)", maxWidth: 380, margin: "8px auto 0", lineHeight: 1.6 }}>
             Run a browser test from the PR Review page to see results here.
           </p>
         </div>
@@ -135,34 +129,26 @@ export default function HistoryPage() {
         <>
           {/* Summary stats */}
           <div className="history-stats">
-            <div className="history-stat">
-              <span className="history-stat-value">{runs.length}</span>
-              <span className="history-stat-label">Total Runs</span>
+            <div className="history-stat" style={{ background: "var(--panel)", border: "1px solid var(--line)", borderRadius: 14, padding: 20 }}>
+              <span className="history-stat-value" style={{ fontSize: 32, fontWeight: 800 }}>{runs.length}</span>
+              <span className="history-stat-label" style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--muted)", marginTop: 4 }}>Total Runs</span>
             </div>
-            <div className="history-stat">
-              <span className="history-stat-value" style={{ color: "#059669" }}>
-                {runs.filter((r) => r.status === "passed").length}
-              </span>
-              <span className="history-stat-label">Passed</span>
+            <div className="history-stat" style={{ background: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: 14, padding: 20 }}>
+              <span className="history-stat-value" style={{ fontSize: 32, fontWeight: 800, color: "#059669" }}>{passed}</span>
+              <span className="history-stat-label" style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em", color: "#059669", marginTop: 4 }}>Passed</span>
             </div>
-            <div className="history-stat">
-              <span className="history-stat-value" style={{ color: "#ef4444" }}>
-                {runs.filter((r) => r.status === "failed").length}
-              </span>
-              <span className="history-stat-label">Failed</span>
+            <div className="history-stat" style={{ background: "#fef2f2", border: "1px solid #fecaca", borderRadius: 14, padding: 20 }}>
+              <span className="history-stat-value" style={{ fontSize: 32, fontWeight: 800, color: "#ef4444" }}>{failed}</span>
+              <span className="history-stat-label" style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em", color: "#ef4444", marginTop: 4 }}>Failed</span>
             </div>
-            <div className="history-stat">
-              <span className="history-stat-value">
-                {runs.length > 0
-                  ? `${((runs.filter((r) => r.status === "passed").length / runs.length) * 100).toFixed(0)}%`
-                  : "—"}
-              </span>
-              <span className="history-stat-label">Pass Rate</span>
+            <div className="history-stat" style={{ background: "var(--panel)", border: "1px solid var(--line)", borderRadius: 14, padding: 20 }}>
+              <span className="history-stat-value" style={{ fontSize: 32, fontWeight: 800 }}>{passRate}</span>
+              <span className="history-stat-label" style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--muted)", marginTop: 4 }}>Pass Rate</span>
             </div>
           </div>
 
           {/* Runs table */}
-          <div className="history-table">
+          <div className="history-table" style={{ border: "1px solid var(--line)", borderRadius: 14, overflow: "hidden", background: "var(--panel)" }}>
             <div className="history-table-header">
               <span>Status</span>
               <span>Repository</span>
@@ -184,27 +170,18 @@ export default function HistoryPage() {
                   </span>
                   <span className="history-repo">
                     <strong>{run.repoName}</strong>
-                    {run.repoFullName && (
-                      <small>{run.repoFullName}</small>
-                    )}
+                    {run.repoFullName && <small>{run.repoFullName}</small>}
                   </span>
                   <span className="history-summary">
-                    {run.summary
-                      ? run.summary.length > 80
-                        ? run.summary.slice(0, 80) + "…"
-                        : run.summary
-                      : "—"}
+                    {run.summary ? (run.summary.length > 80 ? run.summary.slice(0, 80) + "…" : run.summary) : "—"}
                   </span>
-                  <span className="history-duration">
-                    {formatDuration(run.durationMs)}
-                  </span>
+                  <span className="history-duration">{formatDuration(run.durationMs)}</span>
                   <span className="history-date">
                     <span>{formatDate(run.createdAt)}</span>
                     <small>{formatTime(run.createdAt)}</small>
                   </span>
                 </div>
 
-                {/* Expanded detail */}
                 {expandedId === run.id && (
                   <div className="history-detail fade-in">
                     <div className="history-detail-grid">
@@ -215,17 +192,13 @@ export default function HistoryPage() {
                       {run.startedAt && (
                         <div className="history-detail-item">
                           <span className="history-detail-label">Started</span>
-                          <span>
-                            {formatDate(run.startedAt)} {formatTime(run.startedAt)}
-                          </span>
+                          <span>{formatDate(run.startedAt)} {formatTime(run.startedAt)}</span>
                         </div>
                       )}
                       {run.finishedAt && (
                         <div className="history-detail-item">
                           <span className="history-detail-label">Finished</span>
-                          <span>
-                            {formatDate(run.finishedAt)} {formatTime(run.finishedAt)}
-                          </span>
+                          <span>{formatDate(run.finishedAt)} {formatTime(run.finishedAt)}</span>
                         </div>
                       )}
                       {run.durationMs && (
@@ -243,25 +216,8 @@ export default function HistoryPage() {
                     )}
                     <div className="history-detail-actions">
                       {run.sessionUrl && (
-                        <a
-                          href={run.sessionUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="session-link"
-                          onClick={(e) => e.stopPropagation()}
-                          style={{ display: "inline-flex", alignItems: "center" }}
-                        >
-                          <svg
-                            width="14"
-                            height="14"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            style={{ marginRight: 6 }}
-                          >
+                        <a href={run.sessionUrl} target="_blank" rel="noopener noreferrer" className="session-link" onClick={(e) => e.stopPropagation()} style={{ display: "inline-flex", alignItems: "center" }}>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: 6 }}>
                             <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
                             <polyline points="15 3 21 3 21 9" />
                             <line x1="10" y1="14" x2="21" y2="3" />
