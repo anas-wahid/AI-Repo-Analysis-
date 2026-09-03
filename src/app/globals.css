@@ -3005,7 +3005,7 @@ details[open] summary ~ * {
 
 .hero {
   text-align: center;
-  padding: 80px 0 0;
+  padding: 72px 0 0;
 }
 
 .hero-badge {
@@ -3019,31 +3019,31 @@ details[open] summary ~ * {
   font-size: 13px;
   font-weight: 600;
   color: var(--muted);
-  margin-bottom: 32px;
+  margin-bottom: 28px;
 }
 
 .hero-title {
   margin: 0;
-  font-size: 56px;
+  font-size: 60px;
   font-weight: 800;
-  line-height: 1.08;
-  letter-spacing: -0.035em;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
   max-width: 720px;
   margin-left: auto;
   margin-right: auto;
 }
 
 .hero-highlight {
-  background: linear-gradient(135deg, #6366f1, #8b5cf6, #a855f7);
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .hero-sub {
-  margin: 24px auto 0;
-  max-width: 560px;
-  font-size: 18px;
+  margin: 20px auto 0;
+  max-width: 520px;
+  font-size: 17px;
   line-height: 1.65;
   color: var(--muted);
 }
@@ -3052,7 +3052,91 @@ details[open] summary ~ * {
   display: flex;
   gap: 14px;
   justify-content: center;
-  margin-top: 36px;
+  margin-top: 32px;
+}
+
+/* Hero Visual - Robot + Stats */
+
+.hero-visual {
+  position: relative;
+  margin-top: 48px;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  height: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-robot {
+  width: 280px;
+  height: 280px;
+  filter: drop-shadow(0 20px 40px rgba(99, 102, 241, 0.2));
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+
+.robot-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.hero-stats-float {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.hero-stat-card {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 14px 20px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--line);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  animation: fadeInUp 0.6s ease both;
+  pointer-events: auto;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.hero-stat-card:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+}
+
+.hero-stat-card:nth-child(1) { top: 30px; left: 20px; animation-delay: 0.1s; }
+.hero-stat-card:nth-child(2) { top: 30px; right: 20px; animation-delay: 0.2s; }
+.hero-stat-card:nth-child(3) { bottom: 60px; left: 40px; animation-delay: 0.3s; }
+.hero-stat-card:nth-child(4) { bottom: 60px; right: 40px; animation-delay: 0.4s; }
+
+.hero-stat-value {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-stat-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* Hero Preview */
@@ -3275,6 +3359,113 @@ details[open] summary ~ * {
   cursor: pointer;
 }
 
+/* Preview - Connection Cards */
+
+.mock-btn-row {
+  display: flex;
+  gap: 6px;
+}
+
+.mock-pill {
+  padding: 4px 12px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--soft);
+  color: var(--text);
+}
+
+.mock-pill.muted {
+  background: transparent;
+  color: var(--muted);
+}
+
+.mock-connection-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px;
+  margin-top: 8px;
+}
+
+.mock-conn-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--soft);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.mock-conn-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mock-conn-info strong {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.mock-conn-info span {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.mock-status-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.mock-status-badge.green {
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid #a7f3d0;
+}
+
+.mock-status-badge.gray {
+  background: var(--soft);
+  color: var(--muted);
+  border: 1px solid var(--line);
+}
+
+/* Step connector line */
+
+.step-connector {
+  position: absolute;
+  top: 32px;
+  right: -24px;
+  width: 24px;
+  height: 2px;
+  background: var(--line);
+}
+
+/* CTA glow */
+
+.cta-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-glow {
+  position: absolute;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 500px;
+  height: 300px;
+  background: radial-gradient(ellipse, rgba(99, 102, 241, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
 /* Sections */
 
 .section {
@@ -3318,11 +3509,12 @@ details[open] summary ~ * {
 }
 
 .step-card {
+  position: relative;
   border: 1px solid var(--line);
   border-radius: 16px;
   background: var(--panel);
   padding: 24px;
-  transition: box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s;
+  transition: box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s;
 }
 
 .step-card:hover {
@@ -3528,6 +3720,33 @@ details[open] summary ~ * {
     align-items: center;
   }
 
+  .hero-visual {
+    height: 320px;
+    margin-top: 32px;
+  }
+
+  .hero-robot {
+    width: 180px;
+    height: 180px;
+  }
+
+  .hero-stat-card {
+    padding: 10px 14px;
+  }
+
+  .hero-stat-value {
+    font-size: 20px;
+  }
+
+  .hero-stat-label {
+    font-size: 10px;
+  }
+
+  .hero-stat-card:nth-child(1) { top: 10px; left: 0; }
+  .hero-stat-card:nth-child(2) { top: 10px; right: 0; }
+  .hero-stat-card:nth-child(3) { bottom: 30px; left: 10px; }
+  .hero-stat-card:nth-child(4) { bottom: 30px; right: 10px; }
+
   .preview-content {
     grid-template-columns: 1fr;
   }
@@ -3539,6 +3758,10 @@ details[open] summary ~ * {
   .steps-grid,
   .features-grid {
     grid-template-columns: 1fr;
+  }
+
+  .step-connector {
+    display: none !important;
   }
 
   .footer-inner {
