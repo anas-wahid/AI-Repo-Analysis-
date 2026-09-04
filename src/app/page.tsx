@@ -300,7 +300,6 @@ const testimonials = [
 
 /* ── Main Component ───────────────────────────────────────── */
 export default function Home() {
-  const f1 = useReveal();
   const f2 = useReveal();
   const f3 = useReveal();
   const f4 = useReveal();
@@ -311,10 +310,6 @@ export default function Home() {
 
       {/* Hero */}
       <section className="hero">
-        <div className="hero-badge reveal" ref={f1}>
-          <span className="status-dot success" />
-          AI-Powered Test Automation
-        </div>
         <h1 className="hero-title reveal" ref={f2}>
           Ship bug-free code
           <br />
