@@ -83,7 +83,7 @@ function ParticleCanvas() {
         vy: (Math.random() - 0.5) * 0.3,
         size: Math.random() * 2 + 0.5,
         opacity: Math.random() * 0.3 + 0.1,
-        hue: Math.random() * 60 + 230,
+        hue: Math.random() * 60 + 180, // cyan/teal range
       });
     }
 
@@ -110,7 +110,7 @@ function ParticleCanvas() {
             ctx!.beginPath();
             ctx!.moveTo(particles[i].x, particles[i].y);
             ctx!.lineTo(particles[j].x, particles[j].y);
-            ctx!.strokeStyle = `hsla(240, 60%, 60%, ${0.06 * (1 - dist / 120)})`;
+            ctx!.strokeStyle = `hsla(190, 60%, 60%, ${0.06 * (1 - dist / 120)})`;
             ctx!.lineWidth = 0.5;
             ctx!.stroke();
           }
@@ -170,18 +170,18 @@ function RobotIllustration() {
   return (
     <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg" className="robot-svg">
       <defs>
-        <radialGradient id="glow1" cx="50%" cy="50%" r="50%"><stop offset="0%" stopColor="#6366f1" /><stop offset="100%" stopColor="transparent" /></radialGradient>
-        <radialGradient id="glow2" cx="50%" cy="50%" r="50%"><stop offset="0%" stopColor="#a78bfa" /><stop offset="100%" stopColor="transparent" /></radialGradient>
+        <radialGradient id="glow1" cx="50%" cy="50%" r="50%"><stop offset="0%" stopColor="#06b6d4" /><stop offset="100%" stopColor="transparent" /></radialGradient>
+        <radialGradient id="glow2" cx="50%" cy="50%" r="50%"><stop offset="0%" stopColor="#22d3ee" /><stop offset="100%" stopColor="transparent" /></radialGradient>
         <linearGradient id="bodyG" x1="130" y1="160" x2="270" y2="280"><stop offset="0%" stopColor="#e2e8f0" /><stop offset="100%" stopColor="#cbd5e1" /></linearGradient>
         <linearGradient id="headG" x1="145" y1="80" x2="255" y2="170"><stop offset="0%" stopColor="#f1f5f9" /><stop offset="100%" stopColor="#e2e8f0" /></linearGradient>
         <linearGradient id="strG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#94a3b8" /><stop offset="100%" stopColor="#64748b" /></linearGradient>
-        <linearGradient id="eyeG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#6366f1" /><stop offset="100%" stopColor="#8b5cf6" /></linearGradient>
-        <linearGradient id="antG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#6366f1" /><stop offset="100%" stopColor="#a78bfa" /></linearGradient>
+        <linearGradient id="eyeG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#06b6d4" /><stop offset="100%" stopColor="#0ea5e9" /></linearGradient>
+        <linearGradient id="antG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#06b6d4" /><stop offset="100%" stopColor="#22d3ee" /></linearGradient>
         <linearGradient id="armG" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stopColor="#e2e8f0" /><stop offset="100%" stopColor="#cbd5e1" /></linearGradient>
         <linearGradient id="handG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#f1f5f9" /><stop offset="100%" stopColor="#e2e8f0" /></linearGradient>
         <linearGradient id="legG" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stopColor="#cbd5e1" /><stop offset="100%" stopColor="#94a3b8" /></linearGradient>
         <linearGradient id="footG" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stopColor="#94a3b8" /><stop offset="100%" stopColor="#64748b" /></linearGradient>
-        <filter id="robotShadow"><feDropShadow dx="0" dy="8" stdDeviation="8" floodColor="#6366f1" floodOpacity="0.25" /></filter>
+        <filter id="robotShadow"><feDropShadow dx="0" dy="8" stdDeviation="8" floodColor="#06b6d4" floodOpacity="0.25" /></filter>
       </defs>
       <circle cx="200" cy="200" r="160" fill="url(#glow1)" opacity="0.12" />
       <circle cx="200" cy="200" r="120" fill="url(#glow2)" opacity="0.08" />
@@ -205,7 +205,7 @@ function RobotIllustration() {
         <rect x="155" y="180" width="90" height="50" rx="10" fill="#0f172a" opacity="0.6" />
         <rect x="165" y="190" width="30" height="8" rx="4" fill="#22c55e" opacity="0.8"><animate attributeName="width" values="30;55;30" dur="3s" repeatCount="indefinite" /></rect>
         <rect x="165" y="204" width="50" height="8" rx="4" fill="#60a5fa" opacity="0.8"><animate attributeName="width" values="50;30;50" dur="2.5s" repeatCount="indefinite" /></rect>
-        <rect x="165" y="218" width="40" height="8" rx="4" fill="#a78bfa" opacity="0.8"><animate attributeName="width" values="40;60;40" dur="3.5s" repeatCount="indefinite" /></rect>
+        <rect x="165" y="218" width="40" height="8" rx="4" fill="#22d3ee" opacity="0.8"><animate attributeName="width" values="40;60;40" dur="3.5s" repeatCount="indefinite" /></rect>
         <rect x="100" y="185" width="22" height="60" rx="11" fill="url(#armG)" stroke="url(#strG)" strokeWidth="1.5" />
         <rect x="278" y="185" width="22" height="60" rx="11" fill="url(#armG)" stroke="url(#strG)" strokeWidth="1.5" />
         <circle cx="111" cy="255" r="14" fill="url(#handG)" stroke="url(#strG)" strokeWidth="1.5" />
@@ -216,12 +216,12 @@ function RobotIllustration() {
         <rect x="213" y="330" width="42" height="16" rx="8" fill="url(#footG)" stroke="url(#strG)" strokeWidth="1.5" />
       </g>
       {[
-        { cx: 75, cy: 120, r: 3, fill: "#a78bfa", delay: "0s", dur: "3s" },
-        { cx: 325, cy: 100, r: 2, fill: "#60a5fa", delay: "0.5s", dur: "4s" },
+        { cx: 75, cy: 120, r: 3, fill: "#22d3ee", delay: "0s", dur: "3s" },
+        { cx: 325, cy: 100, r: 2, fill: "#0ea5e9", delay: "0.5s", dur: "4s" },
         { cx: 85, cy: 280, r: 2.5, fill: "#22c55e", delay: "1s", dur: "3.5s" },
         { cx: 315, cy: 300, r: 2, fill: "#f59e0b", delay: "1.5s", dur: "2.8s" },
         { cx: 55, cy: 200, r: 1.5, fill: "#ec4899", delay: "0.3s", dur: "3.2s" },
-        { cx: 345, cy: 200, r: 1.5, fill: "#8b5cf6", delay: "0.8s", dur: "2.7s" },
+        { cx: 345, cy: 200, r: 1.5, fill: "#06b6d4", delay: "0.8s", dur: "2.7s" },
         { cx: 100, cy: 350, r: 1.5, fill: "#06b6d4", delay: "1.2s", dur: "3.8s" },
         { cx: 300, cy: 50, r: 2, fill: "#f43f5e", delay: "0.6s", dur: "3.1s" },
       ].map((p, i) => (

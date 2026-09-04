@@ -24,8 +24,8 @@
   --shadow-lg: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
   --glass-bg: rgba(255, 255, 255, 0.8);
   --glass-border: rgba(226, 232, 240, 0.8);
-  --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  --gradient-accent: linear-gradient(135deg, #0f172a 0%, #334155 100%);
+  --gradient-primary: linear-gradient(135deg, #06b6d4 0%, #0ea5e9 100%);
+  --gradient-accent: linear-gradient(135deg, #0f172a 0%, #164e63 100%);
   --radius: 12px;
   --radius-lg: 16px;
 }
@@ -3034,7 +3034,7 @@ details[open] summary ~ * {
 }
 
 .hero-highlight {
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+  background: linear-gradient(135deg, #06b6d4 0%, #0ea5e9 50%, #22d3ee 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -3122,7 +3122,7 @@ details[open] summary ~ * {
   font-size: 28px;
   font-weight: 800;
   letter-spacing: -0.03em;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  background: linear-gradient(135deg, #06b6d4, #0ea5e9);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -3339,7 +3339,7 @@ details[open] summary ~ * {
   flex-shrink: 0;
 }
 
-.mock-dot.blue { background: #6366f1; }
+.mock-dot.blue { background: #06b6d4; }
 .mock-dot.green { background: #22c55e; }
 .mock-dot.orange { background: #f59e0b; }
 
@@ -3854,7 +3854,7 @@ details[open] summary ~ * {
 }
 
 .code-window-badge {
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  background: linear-gradient(135deg, #06b6d4, #0ea5e9);
   color: white;
   font-size: 10px;
   font-weight: 700;
