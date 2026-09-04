@@ -35,8 +35,8 @@ function AnimatedCounter({ end, suffix = "", duration = 2000 }: { end: number; s
 }
 
 /* ── Scroll Reveal Hook ───────────────────────────────────── */
-function useReveal() {
-  const ref = useRef<HTMLDivElement>(null);
+function useReveal<T extends HTMLElement = HTMLDivElement>() {
+  const ref = useRef<T>(null);
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
@@ -489,7 +489,7 @@ export default function Home() {
         <div className="cta-glow" />
         <h2 className="cta-title reveal" ref={useReveal()}>Ready to ship with confidence?</h2>
         <p className="cta-desc reveal" ref={useReveal()}>Join developers who trust TESTO to catch bugs before their users do.</p>
-        <Link href="/review" className="btn btn-gradient btn-lg reveal" ref={useReveal()}>
+        <Link href="/review" className="btn btn-gradient btn-lg reveal" ref={useReveal<HTMLAnchorElement>()}>
           Get Started Free
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
         </Link>
