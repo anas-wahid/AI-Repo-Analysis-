@@ -308,6 +308,25 @@ export default function Home() {
     <div className="landing">
       <ParticleCanvas />
 
+      {/* Header Navbar */}
+      <header className="landing-header">
+        <div className="header-inner">
+          <Link href="/" className="header-brand">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2a4 4 0 0 0-4 4v2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2h-2V6a4 4 0 0 0-4-4z" /><circle cx="9" cy="15" r="1" fill="currentColor" /><circle cx="15" cy="15" r="1" fill="currentColor" /></svg>
+            TESTO
+          </Link>
+          <nav className="header-nav">
+            <a href="#features">Features</a>
+            <a href="#workflow">Workflow</a>
+            <a href="#preview">Preview</a>
+          </nav>
+          <div className="header-actions">
+            <Link href="/review" className="btn btn-ghost btn-sm">Sign In</Link>
+            <Link href="/review" className="btn btn-primary btn-sm">Get Started</Link>
+          </div>
+        </div>
+      </header>
+
       {/* Hero */}
       <section className="hero">
         <h1 className="hero-title reveal" ref={f2}>
@@ -359,7 +378,7 @@ export default function Home() {
       </section>
 
       {/* How It Works */}
-      <section className="section">
+      <section className="section" id="workflow">
         <div className="section-label reveal" ref={useReveal()}>Workflow</div>
         <h2 className="section-title reveal" ref={useReveal()}>From repo to results in seconds</h2>
         <p className="section-desc reveal" ref={useReveal()}>Zero manual test writing. The AI handles everything.</p>
@@ -376,7 +395,7 @@ export default function Home() {
       </section>
 
       {/* Features */}
-      <section className="section">
+      <section className="section" id="features">
         <div className="section-label reveal" ref={useReveal()}>Capabilities</div>
         <h2 className="section-title reveal" ref={useReveal()}>Everything you need to test</h2>
         <p className="section-desc reveal" ref={useReveal()}>A complete AI-powered testing pipeline.</p>
@@ -443,7 +462,7 @@ export default function Home() {
       </section>
 
       {/* App Preview */}
-      <section className="section">
+      <section className="section" id="preview">
         <div className="section-label reveal" ref={useReveal()}>Interface</div>
         <h2 className="section-title reveal" ref={useReveal()}>Built for developers</h2>
         <div className="hero-preview reveal" ref={useReveal()}>
