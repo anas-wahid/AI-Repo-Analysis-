@@ -159,11 +159,9 @@ export function Sidebar() {
                 style={{ width: "100%", height: "100%", borderRadius: 999, objectFit: "cover" }}
               />
             ) : (
-              <img
-                src="https://i.pravatar.cc/100?img=47"
-                alt="Profile"
-                style={{ width: "100%", height: "100%", borderRadius: 999, objectFit: "cover" }}
-              />
+              <span style={{ width: "100%", height: "100%", borderRadius: 999, background: "var(--gradient-primary)", color: "white", display: "grid", placeItems: "center", fontSize: 13, fontWeight: 700 }}>
+                D
+              </span>
             )}
           </div>
           <div className="profile-info">
