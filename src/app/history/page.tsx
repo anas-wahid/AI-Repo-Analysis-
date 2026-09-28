@@ -29,7 +29,7 @@ export default function HistoryPage() {
           setRuns(data.runs);
         }
       })
-      .catch(() => {})
+      .catch(() => { })
       .finally(() => setLoading(false));
   }, []);
 
@@ -90,7 +90,7 @@ export default function HistoryPage() {
             fetch("/api/runs")
               .then((r) => r.json())
               .then((data) => { if (data.ok) setRuns(data.runs); })
-              .catch(() => {})
+              .catch(() => { })
               .finally(() => setLoading(false));
           }}
           style={{ display: "inline-flex", alignItems: "center", gap: 6 }}

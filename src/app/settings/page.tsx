@@ -19,6 +19,9 @@ type HealthData = {
   missingEnv: string[];
 };
 
+// Env vars that belong to integrations hidden from this page
+const HIDDEN_ENV_PATTERN = /DATABASE|NEON|BROWSERBASE/i;
+
 export default function SettingsPage() {
   const [health, setHealth] = useState<HealthData | null>(null);
   const [githubStatus, setGithubStatus] = useState<{
@@ -37,25 +40,11 @@ export default function SettingsPage() {
         setHealth(h);
         if (g) setGithubStatus(g as unknown as typeof githubStatus);
       })
-      .catch(() => {})
+      .catch(() => { })
       .finally(() => setLoading(false));
   }, []);
 
   const integrations: Integration[] = [
-    {
-      name: "Neon Database",
-      key: "DATABASE_URL",
-      configured: health?.layers?.neon === "configured",
-      required: true,
-      description: "Serverless Postgres for storing test results and analytics.",
-      icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <ellipse cx="12" cy="5" rx="9" ry="3" />
-          <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
-          <path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3" />
-        </svg>
-      ),
-    },
     {
       name: "GitHub OAuth",
       key: "GITHUB_CLIENT_ID + SECRET",
@@ -80,21 +69,11 @@ export default function SettingsPage() {
         </svg>
       ),
     },
-    {
-      name: "Browserbase",
-      key: "BROWSERBASE_API_KEY",
-      configured: health?.layers?.browserbase === "configured",
-      required: false,
-      description: "Cloud browser infrastructure for running E2E tests.",
-      icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <rect width="20" height="14" x="2" y="3" rx="2" />
-          <line x1="8" y1="21" x2="16" y2="21" />
-          <line x1="12" y1="17" x2="12" y2="21" />
-        </svg>
-      ),
-    },
   ];
+
+  const visibleMissingEnv = (health?.missingEnv ?? []).filter(
+    (name) => !HIDDEN_ENV_PATTERN.test(name)
+  );
 
   return (
     <section className="review-page">
@@ -109,8 +88,6 @@ export default function SettingsPage() {
 
       {loading ? (
         <div className="skeleton-grid">
-          <div className="skeleton-card" style={{ height: 100 }} />
-          <div className="skeleton-card" style={{ height: 100 }} />
           <div className="skeleton-card" style={{ height: 100 }} />
           <div className="skeleton-card" style={{ height: 100 }} />
         </div>
@@ -197,11 +174,11 @@ export default function SettingsPage() {
                   {health?.ok ? "Healthy" : "Issues Detected"}
                 </span>
               </div>
-              {health?.missingEnv && health.missingEnv.length > 0 && (
+              {visibleMissingEnv.length > 0 && (
                 <div className="env-row">
                   <span>Missing</span>
                   <strong style={{ color: "var(--danger)" }}>
-                    {health.missingEnv.join(", ")}
+                    {visibleMissingEnv.join(", ")}
                   </strong>
                 </div>
               )}

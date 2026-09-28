@@ -9,23 +9,27 @@ export async function GET(request: NextRequest) {
 
   const cookieStore = await cookies();
   const savedState = cookieStore.get("gh_oauth_state")?.value;
+  const returnTo = cookieStore.get("gh_oauth_return_to")?.value || "/review";
+
+  // Clear OAuth session cookies
+  cookieStore.delete("gh_oauth_state");
+  cookieStore.delete("gh_oauth_return_to");
+
+  const targetPath = returnTo.startsWith("/") ? returnTo : `/${returnTo}`;
+  const destUrl = `${env.appUrl}${targetPath}`;
+  const separator = destUrl.includes("?") ? "&" : "?";
 
   // CSRF check
   if (!state || !savedState || state !== savedState) {
-    return NextResponse.redirect(
-      `${env.appUrl}/?error=invalid_state`,
-    );
+    return NextResponse.redirect(`${destUrl}${separator}error=invalid_state`);
   }
 
-  // Clear the state cookie
-  cookieStore.delete("gh_oauth_state");
-
   if (!code) {
-    return NextResponse.redirect(`${env.appUrl}/?error=no_code`);
+    return NextResponse.redirect(`${destUrl}${separator}error=no_code`);
   }
 
   if (!env.githubClientId || !env.githubClientSecret) {
-    return NextResponse.redirect(`${env.appUrl}/?error=missing_config`);
+    return NextResponse.redirect(`${destUrl}${separator}error=missing_config`);
   }
 
   try {
@@ -56,21 +60,21 @@ export async function GET(request: NextRequest) {
 
     if (!tokenData.access_token) {
       return NextResponse.redirect(
-        `${env.appUrl}/?error=${tokenData.error || "no_token"}`,
+        `${destUrl}${separator}error=${tokenData.error || "no_token"}`,
       );
     }
 
     // Store token in secure httpOnly cookie (7 days)
     cookieStore.set("gh_token", tokenData.access_token, {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "production",
       maxAge: 60 * 60 * 24 * 7, // 7 days
       path: "/",
       sameSite: "lax",
     });
 
-    return NextResponse.redirect(`${env.appUrl}/?connected=github`);
+    return NextResponse.redirect(`${destUrl}${separator}connected=github`);
   } catch {
-    return NextResponse.redirect(`${env.appUrl}/?error=token_exchange_failed`);
+    return NextResponse.redirect(`${destUrl}${separator}error=token_exchange_failed`);
   }
 }
